@@ -36,6 +36,33 @@
 # Copyright 2015 Sebastian Ickler
 #
 class base {
-
-
+  
+  class { 'ssh':
+    storeconfigs_enabled => true,
+    server_options => {
+      'Protocol'        => '2',
+      'Port'            => '22',
+      'PermitRootLogin' => 'yes', 
+     }
+  }
+  
+  class { 'chrony':
+      servers => [ '0.pool.ntp.org', '2.centos.pool.ntp.org' ],
+  }
+  
+  user { 'si':
+    ensure           => 'present',
+    gid              => '1000',
+    home             => '/home/si',
+    password         => '$6$VOO8d18g$KyBu59ZZbAxLcFw7jzlWwl2hK2KbvamCYzZDNJz3poD9jwzmMeDnUnb50PUhD0uv2hRvpopgwJUptdwv/VngF1',
+    password_max_age => '99999',
+    password_min_age => '0',
+    shell            => '/bin/bash',
+    uid              => '1000',
+  }
+  
+  group { 'si':
+    ensure => 'present',
+    gid    => '1000',
+  }
 }
